@@ -6,7 +6,7 @@
 #define MIN_BRAILLE 0x2800
 #define MAX_BRAILLE 0x28FF
 
-#define DEFAULT_TIME_BETWEEN_CELLS 30
+#define DEFAULT_TIME_BETWEEN_CELLS 3000
 #define DEFAULT_DELAY_TIME 500
 
 #define NOTHING 0xFF
@@ -20,11 +20,11 @@ class BrailleDisplay
         void writeCells(uint16_t* pattern, uint8_t length, bool reverse = false);
         void writeSingleCell(uint8_t position, uint16_t indv_pattern, uint8_t waitTime = DEFAULT_TIME_BETWEEN_CELLS);
         void setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state);
-        void scrollText(uint16_t* pattern, uint8_t length, uint8_t delayTime = DEFAULT_DELAY_TIME);
+        void scrollText(uint16_t* pattern, uint8_t length, uint8_t delayTime = DEFAULT_DELAY_TIME, bool reverse = false);
         void setWaitTime(uint8_t waitTime);
-        void getWaitTime();
+        uint8_t getWaitTime();
         void setDelayTime(uint8_t delayTime);
-        void getDelayTime();
+        uint8_t getDelayTime();
         void clear();
 
     private:

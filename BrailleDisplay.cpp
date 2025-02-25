@@ -36,7 +36,7 @@ void BrailleDisplay::writeCells(uint16_t* pattern, uint8_t length, bool reverse)
         return;
     }
 
-    if (length < max)
+    if (length <= max)
     {
         max = length;
     }
@@ -45,7 +45,7 @@ void BrailleDisplay::writeCells(uint16_t* pattern, uint8_t length, bool reverse)
     {
         if (reverse == true)
         {
-            writeSingleCell(_cellCount - i - 1, pattern[i], _waitTime);
+            writeSingleCell(_cellCount - i - 1, pattern[length - i - 1], _waitTime);
         }
         else
         {
@@ -63,7 +63,7 @@ void BrailleDisplay::writeCells(uint16_t* pattern, uint8_t length, bool reverse)
             }
             else
             {
-                writeSingleCell(i, NOTHING, _waitTime)                                                                                                                                                                                                                                                                                                                                                                                                          
+                writeSingleCell(i, NOTHING, _waitTime);                                                                                                                                                                                                                                                                                                                                                                                                          
             }
         }
     }      
@@ -82,7 +82,7 @@ void BrailleDisplay::writeSingleCell(uint8_t position, uint16_t indv_pattern, ui
 
     writeToCell(position);
 
-    if (waitTime)
+    if (waitTime != 0)
     {
         delay(waitTime);
     }
@@ -104,29 +104,50 @@ void BrailleDisplay::writeToCell(uint8_t position)
     digitalWrite(_latchPin, HIGH);
 }
 
-void BrailleDisplay::scrollText(uint16_t* pattern, uint8_t length, uint8_t delayTime)
+void BrailleDisplay::scrollText(uint16_t* pattern, uint8_t length, uint8_t delayTime, bool reverse)
 {
-    for (uint8_t i = 0; i <= length - _cellCount; i++)
+    if (reverse)
     {
-        for (uint8_t j = 0; j < _cellCount; j++)
+        for (int8_t i = length - _cellCount; i >= 0; i--) 
         {
-            writeSingleCell(j, pattern[i+j], delayTime);
-        }
+            for (int8_t j = _cellCount - 1; j >= 0; j--)  
+            {
+                writeSingleCell(i, pattern[i + j], _waitTime);
+            }
 
-        for (uint8_t k = length; k < _cellCount; k++)
-        {
-            writeSingleCell(k, NOTHING, _waitTime)
-        }
+            // Clear any leftover character after shifting
+            for (uint8_t k = length - i; k < _cellCount; k++)
+            {
+                writeSingleCell(k, NOTHING, _waitTime);
+            }
 
-        delay(delyaTime);
+            delay(delayTime);
+        }    
     }
+    else
+    {
+        for (uint8_t i = 0; i <= length - _cellCount; i++)
+        {
+            for (uint8_t j = 0; j < _cellCount; j++)
+            {
+                writeSingleCell(j, pattern[i+j], _waitTime);
+            }
+
+            for (uint8_t k = length - i; k < _cellCount; k++)
+            {
+                writeSingleCell(k, NOTHING, _waitTime);
+            }
+
+            delay(delayTime);
+        }
+    }    
 }
 
 void BrailleDisplay::setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state)
 {
     uint8_t position = 7 - cellIndex;
     uint8_t dotMap[] = {3, 4, 5, 0, 1, 2, 7, 6};
-    bitWrite(_cell[position], dotMap[dotIndex], state);
+    bitWrite(_cells[position], dotMap[dotIndex], state);
 
     digitalWrite(_latchPin, LOW);
 
