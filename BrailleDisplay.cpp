@@ -151,7 +151,7 @@ void BrailleDisplay::setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t st
 
     digitalWrite(_latchPin, LOW);
 
-    for (uint8_t i = _cellCount - 1; i >= 0; i++)
+    for (int8_t i = _cellCount - 1; i >= 0; i--)
     {
         shiftOut(_dinPin, _clkPin, MSBFIRST, _cells[i]);
     }
@@ -161,7 +161,7 @@ void BrailleDisplay::setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t st
 
 void BrailleDisplay::clear()
 {
-    for (uint8_t i = _cellCount; i > 0; i--)
+    for (int8_t i = _cellCount; i > 0; i--)
     {
         writeSingleCell(i - 1, NOTHING, 0);
     }
