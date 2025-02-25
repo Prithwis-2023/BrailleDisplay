@@ -32,7 +32,7 @@ void BrailleDisplay::writeCells(uint16_t* pattern, uint8_t length, bool reverse)
 
     if (length > max)
     {
-        scrollText(pattern, length, 500); // needs to be fixed
+        scrollText(pattern, length, 500, reverse); // needs to be fixed
         return;
     }
 
@@ -116,7 +116,7 @@ void BrailleDisplay::scrollText(uint16_t* pattern, uint8_t length, uint8_t delay
             }
 
             // Clear any leftover character after shifting
-            for (uint8_t k = length - i; k < _cellCount; k++)
+            for (uint8_t k = _cellCount - (length - i); k < _cellCount; k++)
             {
                 writeSingleCell(k, NOTHING, _waitTime);
             }
@@ -133,7 +133,7 @@ void BrailleDisplay::scrollText(uint16_t* pattern, uint8_t length, uint8_t delay
                 writeSingleCell(j, pattern[i+j], _waitTime);
             }
 
-            for (uint8_t k = length - i; k < _cellCount; k++)
+            for (uint8_t k = _cellCount - (length - i); k < _cellCount; k++)
             {
                 writeSingleCell(k, NOTHING, _waitTime);
             }
