@@ -1,6 +1,8 @@
 #include "Arduino.h"
 #include "BrailleDisplay.h"
 
+uint8_t DEFAULT_DOTMAP[8] = {3, 4, 5, 0, 1, 2, 7, 6};
+
 BrailleDisplay::BrailleDisplay(uint8_t cellCount, uint8_t onPin, uint8_t dinPin, uint8_t latchPin, uint8_t clkPin, uint8_t doutPin)
 {
     _cellCount = cellCount;
@@ -143,10 +145,10 @@ void BrailleDisplay::scrollText(uint16_t* pattern, uint8_t length, uint8_t delay
     }    
 }
 
-void BrailleDisplay::setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state)
+void BrailleDisplay::setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state, uint8_t* dotMap)
 {
     uint8_t position = 7 - cellIndex;
-    uint8_t dotMap[] = {3, 4, 5, 0, 1, 2, 7, 6};
+    //uint8_t dotMap[] = {3, 4, 5, 0, 1, 2, 7, 6};
     bitWrite(_cells[position], dotMap[dotIndex], state);
 
     digitalWrite(_latchPin, LOW);

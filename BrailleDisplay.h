@@ -12,6 +12,8 @@
 #define NOTHING 0xFF
 #define FULL 0x00
 
+extern uint8_t DEFAULT_DOTMAP[8];
+
 class BrailleDisplay
 {
     public:
@@ -19,7 +21,7 @@ class BrailleDisplay
         void begin();
         void writeCells(uint16_t* pattern, uint8_t length, bool reverse = false);
         void writeSingleCell(uint8_t position, uint16_t indv_pattern, uint8_t waitTime = DEFAULT_TIME_BETWEEN_CELLS);
-        void setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state);
+        void setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state, uint8_t* dotMap = DEFAULT_DOTMAP);
         void scrollText(uint16_t* pattern, uint8_t length, uint8_t delayTime = DEFAULT_DELAY_TIME, bool reverse = false);
         void setWaitTime(uint8_t waitTime);
         uint8_t getWaitTime();
