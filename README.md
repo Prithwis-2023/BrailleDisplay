@@ -41,7 +41,7 @@ BrailleDisplay display(CELL_COUNT, ON_PIN, DIN_PIN, LATCH_PIN, CLK_PIN, DOUT_PIN
 
 void setup()
 {
-    display.begin();
+    BrailleDisplay.begin();
 }
 ```
 
@@ -49,9 +49,9 @@ void setup()
 ```cpp
 void setup()
 {
-    display.writeCell('A', 0); // Writes 'A' to the first cell
+    BrailleDisplay.writeCell('A', 0); // Writes 'A' to the first cell
     delay(1000);
-    display.clear(); // Clears the display
+    BrailleDisplay.clear(); // Clears the display
 }
 ```
 
@@ -90,8 +90,8 @@ void setup()
 ```cpp
 void setup()
 {
-    display.setWaitTime(3000);  // Set wait time between cells
-    display.setDelayTime(500); // Set delay time for scrolling
+    BrailleDisplay.setWaitTime(3000);  // Set wait time between cells
+    BrailleDisplay.setDelayTime(500); // Set delay time for scrolling
 }
 ```
 ## API Reference
