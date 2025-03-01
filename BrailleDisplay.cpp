@@ -1,4 +1,5 @@
 #include "Arduino.h"
+#include "ctype.h"
 #include "BrailleDisplay.h"
 
 uint8_t DEFAULT_DOTMAP[8] = {3, 4, 5, 0, 1, 2, 7, 6};
@@ -147,10 +148,47 @@ void BrailleDisplay::scrollText(uint16_t* pattern, uint8_t length, uint8_t delay
 
 void BrailleDisplay::setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state, uint8_t* dotMap)
 {
-    uint8_t position = 7 - cellIndex;
+    uint8_t position = (_cellCount - 1) - cellIndex;
     //uint8_t dotMap[] = {3, 4, 5, 0, 1, 2, 7, 6};
     bitWrite(_cells[position], dotMap[dotIndex], state);
 
+    digitalWrite(_latchPin, LOW);
+
+    for (int8_t i = _cellCount - 1; i >= 0; i--)
+    {
+        shiftOut(_dinPin, _clkPin, MSBFIRST, _cells[i]);
+    }
+
+    digitalWrite(_latchPin, HIGH);
+}
+
+void BrailleDisplay::writeCell(char c, uint8_t cellIndex)
+{
+    int index = 0;
+    uint8_t position = (_cellCount - 1) - cellIndex;
+    char lowerCase = tolower(c);
+    for (int i = 0; i < 256; i++)
+    {
+        if (_brailleChars[i] == lowerCase)
+        {
+            index = i;
+            break;
+        }
+    }
+    uint16_t code = 0x2800 + index;
+    _cells[position] = _brailleDB[code - MIN_BRAILLE];
+    digitalWrite(_latchPin, LOW);
+
+    for (int8_t i = _cellCount - 1; i >= 0; i--)
+    {
+        shiftOut(_dinPin, _clkPin, MSBFIRST, _cells[i]);
+    }
+
+    digitalWrite(_latchPin, HIGH);
+}
+
+void BrailleDisplay::writeToAllCells()
+{
     digitalWrite(_latchPin, LOW);
 
     for (int8_t i = _cellCount - 1; i >= 0; i--)

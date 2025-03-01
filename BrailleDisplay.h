@@ -2,6 +2,7 @@
 #define BrailleDisplay_h
 
 #include <Arduino.h>
+#include <ctype.h>
 
 #define MIN_BRAILLE 0x2800
 #define MAX_BRAILLE 0x28FF
@@ -20,7 +21,7 @@ class BrailleDisplay
         BrailleDisplay(uint8_t cellCount, uint8_t onPin, uint8_t dinPin, uint8_t latchPin, uint8_t clkPin, uint8_t doutPin);
         void begin();
         void writeCells(uint16_t* pattern, uint8_t length, bool reverse = false);
-        void writeSingleCell(uint8_t position, uint16_t indv_pattern, uint8_t waitTime = DEFAULT_TIME_BETWEEN_CELLS);
+        void writeCell(char c, uint8_t cellIndex);
         void setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state, uint8_t* dotMap = DEFAULT_DOTMAP);
         void scrollText(uint16_t* pattern, uint8_t length, uint8_t delayTime = DEFAULT_DELAY_TIME, bool reverse = false);
         void setWaitTime(uint8_t waitTime);
@@ -40,7 +41,11 @@ class BrailleDisplay
         uint8_t _waitTime;
         uint8_t _delayTime;
 
-        void writeToCell(uint8_t position);  // implicit function
+        void writeSingleCell(uint8_t position, uint16_t indv_pattern, uint8_t waitTime = DEFAULT_TIME_BETWEEN_CELLS);
+        
+        void writeToCell(uint8_t position);
+
+        void writeToAllCells();
 
         const uint16_t _brailleDB[256] = 
         {
@@ -302,7 +307,7 @@ class BrailleDisplay
             0x00, // 0x28FF ⣿ BRAILLE PATTERN DOTS-12345678
         };
 
-        char brailleChars[256] =
+        char _brailleChars[256] =
         {
             ' ',  // 0x2800
             'a', //  0x2801
