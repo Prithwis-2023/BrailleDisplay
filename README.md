@@ -119,4 +119,6 @@ Developed at **Sejong University** by **Prithwis Das** under the guidance of **P
 ## License
 This project is licensed under the MIT License.
 
+## Copyright 
 
+© Prithwis Das 2025. All rights reserved.
