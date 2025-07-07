@@ -187,6 +187,29 @@ void BrailleDisplay::writeCell(char c, uint8_t cellIndex)
     digitalWrite(_latchPin, HIGH);
 }
 
+void BrailleDisplay::binaryWriteCell(uint8_t position, byte byteVal)
+{
+    byte sortedByte;
+
+    bitWrite(sortedByte, 7, bitRead(byteVal, 6));
+    bitWrite(sortedByte, 6, bitRead(byteVal, 7));
+    bitWrite(sortedByte, 5, bitRead(byteVal, 2));
+    bitWrite(sortedByte, 4, bitRead(byteVal, 1));
+    bitWrite(sortedByte, 3, bitRead(byteVal, 0));
+    bitWrite(sortedByte, 2, bitRead(byteVal, 5));
+    bitWrite(sortedByte, 1, bitRead(byteVal, 4));
+    bitWrite(sortedByte, 0, bitRead(byteVal, 3));
+
+    _cells[_cellCount - position - 1] = sortedByte;
+
+    digitalWrite(_latchPin, LOW);
+    for (int i = _cellCount - 1; i >= 0; i--)
+    {
+        shiftOut(_dinPin, _clkPin, MSBFIRST, _cells[i]);
+    }
+    digitalWrite(_latchPin, HIGH);
+}
+
 void BrailleDisplay::writeToAllCells()
 {
     digitalWrite(_latchPin, LOW);
@@ -226,3 +249,4 @@ uint8_t BrailleDisplay::getDelayTime()
 {
   return _delayTime;
 }
+

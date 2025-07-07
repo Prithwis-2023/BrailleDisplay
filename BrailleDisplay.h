@@ -22,6 +22,7 @@ class BrailleDisplay
         void begin();
         void writeCells(uint16_t* pattern, uint8_t length, bool reverse = false);
         void writeCell(char c, uint8_t cellIndex);
+        void binaryWriteCell(uint8_t position, byte byteVal);
         void setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state, uint8_t* dotMap = DEFAULT_DOTMAP);
         void scrollText(uint16_t* pattern, uint8_t length, uint8_t delayTime = DEFAULT_DELAY_TIME, bool reverse = false);
         void setWaitTime(uint8_t waitTime);
