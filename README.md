@@ -99,6 +99,7 @@ void setup()
 |----------|-------------|
 | `begin()` | Initializes the display. |
 | `writeCell(char c, uint8_t cellIndex)` | Displays a character in the specified cell. |
+| `binaryWriteCell(uint8_t cellIndex, byte BYTE)` | Takes 1 byte of binary input and writes it to the cell at cellIndex. |
 | `writeCells(uint16_t* pattern, uint8_t length, bool reverse)` | Displays text on the display. If the length of text is greater than number of cells, then the text is scrolled across display. |
 | `setDotState(uint8_t cellIndex, uint8_t dotIndex, uint8_t state, uint8_t* dotMap)` | Sets the state of an individual dot. |
 | `setWaitTime(uint8_t waitTime)` | Sets the wait time between two consecutive cells. |
