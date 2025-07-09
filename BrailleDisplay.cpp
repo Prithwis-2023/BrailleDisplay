@@ -189,16 +189,17 @@ void BrailleDisplay::writeCell(char c, uint8_t cellIndex)
 
 void BrailleDisplay::binaryWriteCell(uint8_t position, byte byteVal)
 {
+    byte comByteVal = ~byteVal; // complement the byte value
     byte sortedByte;
 
-    bitWrite(sortedByte, 7, bitRead(byteVal, 6));
-    bitWrite(sortedByte, 6, bitRead(byteVal, 7));
-    bitWrite(sortedByte, 5, bitRead(byteVal, 2));
-    bitWrite(sortedByte, 4, bitRead(byteVal, 1));
-    bitWrite(sortedByte, 3, bitRead(byteVal, 0));
-    bitWrite(sortedByte, 2, bitRead(byteVal, 5));
-    bitWrite(sortedByte, 1, bitRead(byteVal, 4));
-    bitWrite(sortedByte, 0, bitRead(byteVal, 3));
+    bitWrite(sortedByte, 7, bitRead(comByteVal, 6));
+    bitWrite(sortedByte, 6, bitRead(comByteVal, 7));
+    bitWrite(sortedByte, 5, bitRead(comByteVal, 2));
+    bitWrite(sortedByte, 4, bitRead(comByteVal, 1));
+    bitWrite(sortedByte, 3, bitRead(comByteVal, 0));
+    bitWrite(sortedByte, 2, bitRead(comByteVal, 5));
+    bitWrite(sortedByte, 1, bitRead(comBbyteVal, 4));
+    bitWrite(sortedByte, 0, bitRead(comByteVal, 3));
 
     _cells[_cellCount - position - 1] = sortedByte;
 
