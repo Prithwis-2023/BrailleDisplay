@@ -198,7 +198,7 @@ void BrailleDisplay::binaryWriteCell(uint8_t position, byte byteVal)
     bitWrite(sortedByte, 4, bitRead(comByteVal, 1));
     bitWrite(sortedByte, 3, bitRead(comByteVal, 0));
     bitWrite(sortedByte, 2, bitRead(comByteVal, 5));
-    bitWrite(sortedByte, 1, bitRead(comBbyteVal, 4));
+    bitWrite(sortedByte, 1, bitRead(comByteVal, 4));
     bitWrite(sortedByte, 0, bitRead(comByteVal, 3));
 
     _cells[_cellCount - position - 1] = sortedByte;
