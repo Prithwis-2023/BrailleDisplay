@@ -207,7 +207,7 @@ void BrailleDisplay::binaryWriteCell(uint8_t position, byte byteVal)
     digitalWrite(_latchPin, LOW);
     for (int i = _cellCount - 1; i >= 0; i--)
     {
-      shiftOut(_dinPin, _clkPin, MSBFIRST, cells[i]);
+      shiftOut(_dinPin, _clkPin, MSBFIRST, _cells[i]);
     }
     digitalWrite(_latchPin, HIGH);
 }
