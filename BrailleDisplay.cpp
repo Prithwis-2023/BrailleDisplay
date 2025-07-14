@@ -202,14 +202,14 @@ void BrailleDisplay::binaryWriteCell(uint8_t position, byte byteVal)
 
     sortedByte = ~sortedByte;
 
-    cells[CELL_COUNT - position - 1] = sortedByte;
+    _cells[_cellCount - position - 1] = sortedByte;
 
-    digitalWrite(LATCH_PIN, LOW);
-    for (int i = CELL_COUNT - 1; i >= 0; i--)
+    digitalWrite(_latchPin, LOW);
+    for (int i = _cellCount - 1; i >= 0; i--)
     {
-      shiftOut(DIN_PIN, CLK_PIN, MSBFIRST, cells[i]);
+      shiftOut(_dinPin, _clkPin, MSBFIRST, cells[i]);
     }
-    digitalWrite(LATCH_PIN, HIGH);
+    digitalWrite(_latchPin, HIGH);
 }
 
 void BrailleDisplay::writeToAllCells()
